@@ -50,8 +50,7 @@ public class Evaluator {
           // The Operator class should contain an instance of a HashMap,
           // and values will be instances of the Operators.  See Operator class
           // skeleton for an example.
-          //test duy
-          Operator newOperator = new Operator();
+          Operator newOperator = Operator.getOperator(expressionToken);
         
           while (operatorStack.peek().priority() >= newOperator.priority() ) {
             // note that when we eval the expression 1 - 2 we will

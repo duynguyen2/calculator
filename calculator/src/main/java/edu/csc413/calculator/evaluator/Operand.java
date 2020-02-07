@@ -5,11 +5,14 @@ package edu.csc413.calculator.evaluator;
  * in a valid mathematical expression.
  */
 public class Operand {
+
+    private int value;
+
     /**
      * construct operand from string token.
      */
     public Operand(String token) {
-
+        this.value = Integer.parseInt(token);
     }
 
     /**
