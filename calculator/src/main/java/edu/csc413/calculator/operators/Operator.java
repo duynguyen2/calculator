@@ -16,13 +16,13 @@ public abstract class Operator {
     private static final Hashmap<String, Operator> operators = new Hashmap<>();
 
     static{ //hashmap block
-        operators.put("", );
-        operators.put("", );
-        operators.put("", );
-        operators.put("", );
-        operators.put("", );
-        operators.put("", );
-        operators.put("", );
+        operators.put("+", new AddOperator());
+        operators.put("-", new SubtractOperator());
+        operators.put("*", new MultiplyOperator());
+        operators.put("/", new DivideOperator());
+        operators.put("^", new PowerOperator());
+        operators.put("(", new LeftParanthesisOperator());
+        operators.put(")", new RightParanthesisOperator());
     }
 
     /**

@@ -1,8 +1,8 @@
 package edu.csc413.calculator.operators;
 import edu.csc413.calculator.evaluator.Operand;
 
-public class AddOperator extends Operator{
-    private int priorityValue = 1;
+public class PowerOperator extends Operator{
+    private int priorityValue = 3;
 
     @Override
     public int priority(){
@@ -12,7 +12,11 @@ public class AddOperator extends Operator{
     @Override
     public Operand execute(Operand operator1, Operand operator2){
         int value1 = operator1.getValue(), value2 = operator2.getValue();
-        Operand operand = new Operand(value1 + value2);
+        int exponent = 1;
+        for (int i = 0; i < value2; i++)
+            exponent *= value1;
+
+        Operand operand = new Operand(exponent);
         return operand;
     }
 }
