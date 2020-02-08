@@ -2,11 +2,10 @@ package edu.csc413.calculator.operators;
 import edu.csc413.calculator.evaluator.Operand;
 
 public class AddOperator extends Operator{
-    private int priorityValue = 1;
 
     @Override
     public int priority(){
-        return priorityValue;
+        return 1;
     }
 
     @Override

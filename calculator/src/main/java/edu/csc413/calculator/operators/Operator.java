@@ -49,7 +49,7 @@ public abstract class Operator {
      * @return reference to a Operator instance.
      */
     public static Operator getOperator(String token) {
-        return null;
+        return operators.getOrDefault(token, null);
     }
 
     /**
@@ -59,6 +59,6 @@ public abstract class Operator {
      * Think about what happens if we add more operators.
      */
     public static boolean check(String token) {
-        return false;
+        return operators.containsKey(token);
     }
 }

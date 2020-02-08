@@ -33,7 +33,13 @@ public class Operand {
      * Check to see if given token is a valid
      * operand.
      */
-    public static boolean check(String token) {
-        return false;
+    public static boolean check(String token){
+        try{
+            Integer.parseInt(token);
+        }
+        catch(NumberFormatException x){
+            return false;
+        }
+        return true;
     }
 }
