@@ -10,8 +10,8 @@ public class PowerOperator extends Operator{
     }
 
     @Override
-    public Operand execute(Operand operator1, Operand operator2){
-        int value1 = operator1.getValue(), value2 = operator2.getValue();
+    public Operand execute(Operand operand1, Operand operand2){
+        int value1 = operand1.getValue(), value2 = operand2.getValue();
         int exponent = 1;
         for (int i = 0; i < value2; i++)
             exponent *= value1;

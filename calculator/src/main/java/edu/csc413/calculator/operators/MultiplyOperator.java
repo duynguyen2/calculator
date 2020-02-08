@@ -10,8 +10,8 @@ public class MultiplyOperator extends Operator{
     }
 
     @Override
-    public Operand execute(Operand operator1, Operand operator2){
-        int value1 = operator1.getValue(), value2 = operator2.getValue();
+    public Operand execute(Operand operand1, Operand operand2){
+        int value1 = operand1.getValue(), value2 = operand2.getValue();
         Operand operand = new Operand(value1 * value2);
         return operand;
     }
