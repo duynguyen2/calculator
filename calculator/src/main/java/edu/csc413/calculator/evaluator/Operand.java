@@ -6,7 +6,7 @@ package edu.csc413.calculator.evaluator;
  */
 public class Operand {
 
-    private int value;
+    int value;
 
     /**
      * construct operand from string token.
@@ -36,10 +36,10 @@ public class Operand {
     public static boolean check(String token){
         try{
             Integer.parseInt(token);
+            return true;
         }
         catch(NumberFormatException x){
             return false;
         }
-        return true;
     }
 }

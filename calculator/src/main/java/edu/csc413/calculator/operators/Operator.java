@@ -49,7 +49,7 @@ public abstract class Operator {
      * @return reference to a Operator instance.
      */
     public static Operator getOperator(String token) {
-        return operators.getOrDefault(token, null);
+        return operators.get(token);
     }
 
     /**

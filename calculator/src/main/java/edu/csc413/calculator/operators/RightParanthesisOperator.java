@@ -5,7 +5,7 @@ public class RightParanthesisOperator extends Operator{
 
     @Override
     public int priority(){
-        return 0;
+        return 4;
     }
 
     @Override

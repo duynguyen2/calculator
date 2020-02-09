@@ -20,6 +20,13 @@ public class Evaluator {
     operatorStack = new Stack<>();
   }
 
+  public void process(){
+    Operator operatorFromStack = operatorStack.pop();
+    Operand operandTwo = operandStack.pop(), operandOne = operandStack.pop();
+    Operand result = operatorFromStack.execute(operandOne, operandTwo);
+    operandStack.push(result);
+  }
+
   public int evaluateExpression(String expression ) throws InvalidTokenException {
     String expressionToken;
 
@@ -38,22 +45,12 @@ public class Evaluator {
       // filter out spaces
       if (!( expressionToken = this.expressionTokenizer.nextToken() ).equals( " " )) {
         // check if token is an operand
-        if (Operand.check( expressionToken )) {
+        if (Operand.check( expressionToken )) {//operand check
           operandStack.push( new Operand( expressionToken ));
         } else {
           if (!Operator.check( expressionToken)) {
             throw new InvalidTokenException(expressionToken);
-          } else if (")".equals(expressionToken)) {
-            while(operatorStack.peek().priority() != 0){
-              Operator operatorFromStack = operatorStack.pop();
-              Operand operand2 = operandStack.pop();
-              Operand operand1 = operandStack.pop();
-              operandStack.push(operatorFromStack.execute(operand1, operand2));
-            }
-            operatorStack.pop();//discard "("
           }
-          else if("(".equals(expressionToken))
-            operatorStack.push(new LeftParanthesisOperator());
 
           // TODO Operator is abstract - these two lines will need to be fixed:
           // The Operator class should contain an instance of a HashMap,
@@ -61,18 +58,29 @@ public class Evaluator {
           // skeleton for an example.
           Operator newOperator = Operator.getOperator(expressionToken);
 
-          while ((operatorStack.peek().priority() >= newOperator.priority()) && (!operatorStack.isEmpty()) && (operandStack.size() > 1)) {
-            // note that when we eval the expression 1 - 2 we will
-            // push the 1 then the 2 and then do the subtraction operation
-            // This means that the first number to be popped is the
-            // second operand, not the first operand - see the following code
-            Operator operatorFromStack = operatorStack.pop();
-            Operand operandTwo = operandStack.pop();
-            Operand operandOne = operandStack.pop();
-            Operand result = operatorFromStack.execute(operandOne, operandTwo);
-            operandStack.push(result);
+          if((operatorStack.isEmpty()) || (")".equals(expressionToken))) //checking for emptiness or left paranthesis
+            operatorStack.push(newOperator);
+          else {//stack is not empty and operator is not a left paranthesis
+            if ("(".equals(expressionToken)) { //right paranthesis check
+              while (!")".equals(expressionToken))//processing until corresponding left paranthesis is found
+                process();
+
+              if (")".equals(expressionToken))//left paranthesis check
+                operatorStack.pop();//discarding left paranthesis after processing
+
+            } else {//new operator has to be a mathematical operator
+              while ((operatorStack.peek().priority() >= newOperator.priority()) && (!operatorStack.isEmpty())) {
+                // note that when we eval the expression 1 - 2 we will
+                // push the 1 then the 2 and then do the subtraction operation
+                // This means that the first number to be popped is the
+                // second operand, not the first operand - see the following code
+                process();
+                if(operatorStack.isEmpty())
+                  break;
+              }
+              operatorStack.push(newOperator);
+            }
           }
-          operatorStack.push(newOperator);
         }
       }
     }
@@ -86,14 +94,9 @@ public class Evaluator {
     // In order to complete the evaluation we must empty the stacks,
     // that is, we should keep evaluating the operator stack until it is empty;
     // Suggestion: create a method that processes the operator stack until empty.
+    while(!operatorStack.isEmpty())//runs until it is empty
+      process();//processes until the stack is empty
 
-    while(!operatorStack.empty()){
-      Operator operatorFromStack = operatorStack.pop();
-      Operand operand2 = operandStack.pop();
-      Operand operand1 = operandStack.pop();
-      operandStack.push(operatorFromStack.execute(operand1, operand2));
-    }
-
-    return (operandStack.pop().getValue());
+    return operandStack.pop().getValue();
   }
 }
