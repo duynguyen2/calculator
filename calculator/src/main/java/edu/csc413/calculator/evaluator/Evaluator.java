@@ -13,14 +13,14 @@ public class Evaluator {
   private Stack<Operand> operandStack;
   private Stack<Operator> operatorStack;
   private StringTokenizer expressionTokenizer;
-  private final String delimiters = " +/*-^";
+  private final String delimiters = " +/*-^()"; //included the parenthesis
 
   public Evaluator() {
     operandStack = new Stack<>();
     operatorStack = new Stack<>();
   }
 
-  public void process(){
+  private void process() { //method to execute, instead of repeating these lines
     Operator operatorFromStack = operatorStack.pop();
     Operand operandTwo = operandStack.pop(), operandOne = operandStack.pop();
     Operand result = operatorFromStack.execute(operandOne, operandTwo);
@@ -40,7 +40,6 @@ public class Evaluator {
     // of the usual operators
 
 
-
     while (this.expressionTokenizer.hasMoreTokens()) {
       // filter out spaces
       if (!( expressionToken = this.expressionTokenizer.nextToken() ).equals( " " )) {
@@ -58,24 +57,23 @@ public class Evaluator {
           // skeleton for an example.
           Operator newOperator = Operator.getOperator(expressionToken);
 
-          if((operatorStack.isEmpty()) || (")".equals(expressionToken))) //checking for emptiness or left paranthesis
+          //checking for emptiness or left parenthesis
+          if((operatorStack.isEmpty()) || ("(".equals(expressionToken)))
             operatorStack.push(newOperator);
-          else {//stack is not empty and operator is not a left paranthesis
-            if ("(".equals(expressionToken)) { //right paranthesis check
-              while (!")".equals(expressionToken))//processing until corresponding left paranthesis is found
+          else { //stack is not empty and operator is not a left parenthesis
+            if (")".equals(expressionToken)) { //right parenthesis check
+              while (operatorStack.peek().priority() != 0) { //processing until corresponding left parenthesis is found
                 process();
-
-              if (")".equals(expressionToken))//left paranthesis check
-                operatorStack.pop();//discarding left paranthesis after processing
-
-            } else {//new operator has to be a mathematical operator
-              while ((operatorStack.peek().priority() >= newOperator.priority()) && (!operatorStack.isEmpty())) {
+              }
+              operatorStack.pop(); //discarding left parenthesis after processing
+            } else { //new operator has to be a mathematical operator
+              while ((operatorStack.peek().priority() >= newOperator.priority() && !operatorStack.isEmpty())) {
                 // note that when we eval the expression 1 - 2 we will
                 // push the 1 then the 2 and then do the subtraction operation
                 // This means that the first number to be popped is the
                 // second operand, not the first operand - see the following code
                 process();
-                if(operatorStack.isEmpty())
+                if (operatorStack.isEmpty())
                   break;
               }
               operatorStack.push(newOperator);
@@ -85,7 +83,6 @@ public class Evaluator {
       }
     }
 
-
     // Control gets here when we've picked up all of the tokens; you must add
     // code to complete the evaluation - consider how the code given here
     // will evaluate the expression 1+2*3
@@ -94,9 +91,10 @@ public class Evaluator {
     // In order to complete the evaluation we must empty the stacks,
     // that is, we should keep evaluating the operator stack until it is empty;
     // Suggestion: create a method that processes the operator stack until empty.
-    while(!operatorStack.isEmpty())//runs until it is empty
-      process();//processes until the stack is empty
+    while(!operatorStack.isEmpty()) { //runs until it is empty
+      process(); //processes until the stack is empty
+    }
 
-    return operandStack.pop().getValue();
+    return operandStack.peek().getValue();
   }
 }
