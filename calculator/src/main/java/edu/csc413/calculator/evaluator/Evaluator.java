@@ -20,6 +20,10 @@ public class Evaluator {
     operatorStack = new Stack<>();
   }
 
+  // note that when we eval the expression 1 - 2 we will
+  // push the 1 then the 2 and then do the subtraction operation
+  // This means that the first number to be popped is the
+  // second operand, not the first operand - see the following code
   private void process() { //method to execute, instead of repeating these lines
     Operator operatorFromStack = operatorStack.pop();
     Operand operandTwo = operandStack.pop(), operandOne = operandStack.pop();
@@ -38,7 +42,6 @@ public class Evaluator {
     // the priority of any operator in the operator stack other than
     // the usual mathematical operators - "+-*/" - should be less than the priority
     // of the usual operators
-
 
     while (this.expressionTokenizer.hasMoreTokens()) {
       // filter out spaces
@@ -59,29 +62,28 @@ public class Evaluator {
 
           //checking for emptiness or left parenthesis
           if((operatorStack.isEmpty()) || ("(".equals(expressionToken)))
-            operatorStack.push(newOperator);
+            operatorStack.push(newOperator); //push the newOperator into the stack if it is empty or left parenthesis
+
           else { //stack is not empty and operator is not a left parenthesis
             if (")".equals(expressionToken)) { //right parenthesis check
-              while (operatorStack.peek().priority() != 0) { //processing until corresponding left parenthesis is found
+              while (operatorStack.peek().priority() != 0)  //processing until corresponding left parenthesis is found
                 process();
-              }
-              operatorStack.pop(); //discarding left parenthesis after processing
+
+              operatorStack.pop(); //discarding left parenthesis after it's found
             } else { //new operator has to be a mathematical operator
-              while ((operatorStack.peek().priority() >= newOperator.priority() && !operatorStack.isEmpty())) {
-                // note that when we eval the expression 1 - 2 we will
-                // push the 1 then the 2 and then do the subtraction operation
-                // This means that the first number to be popped is the
-                // second operand, not the first operand - see the following code
+              while ((operatorStack.peek().priority() >= newOperator.priority() && !operatorStack.isEmpty())) { //if the operatorStack item has higher or equal priority to the new operator or the operator stack is empty
                 process();
-                if (operatorStack.isEmpty())
+
+                if (operatorStack.isEmpty())//after processing, if the stack is empty then break
                   break;
-              }
-              operatorStack.push(newOperator);
-            }
-          }
-        }
-      }
-    }
+
+              } //end while
+              operatorStack.push(newOperator); //push the new operator
+            } //end mathematical operator else
+          } //end non-empty stack and not left parenthesis else
+        } //end operand check else
+      } //end space filter if
+    } //end token while
 
     // Control gets here when we've picked up all of the tokens; you must add
     // code to complete the evaluation - consider how the code given here
@@ -95,6 +97,6 @@ public class Evaluator {
       process(); //processes until the stack is empty
     }
 
-    return operandStack.peek().getValue();
+    return operandStack.pop().getValue(); //return the value of the top of the operand stack
   }
 }
