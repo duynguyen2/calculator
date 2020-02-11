@@ -54,15 +54,14 @@ public class Evaluator {
             throw new InvalidTokenException(expressionToken);
           }
 
-          // TODO Operator is abstract - these two lines will need to be fixed:
-          // The Operator class should contain an instance of a HashMap,
-          // and values will be instances of the Operators.  See Operator class
-          // skeleton for an example.
           Operator newOperator = Operator.getOperator(expressionToken);
 
           //checking for emptiness or left parenthesis
-          if((operatorStack.isEmpty()) || ("(".equals(expressionToken)))
-            operatorStack.push(newOperator); //push the newOperator into the stack if it is empty or left parenthesis
+          if(operatorStack.isEmpty()) //push the newOperator into the stack if it is empty
+            operatorStack.push(newOperator);
+
+          else if(("(".equals(expressionToken)))
+            operatorStack.push(newOperator); //push the newOperator into the stack if it is a left parenthesis
 
           else { //stack is not empty and operator is not a left parenthesis
             if (")".equals(expressionToken)) { //right parenthesis check
@@ -92,7 +91,7 @@ public class Evaluator {
     // and the operator stack will have + * with 2 and * on the top;
     // In order to complete the evaluation we must empty the stacks,
     // that is, we should keep evaluating the operator stack until it is empty;
-    // Suggestion: create a method that processes the operator stack until empty.
+
     while(!operatorStack.isEmpty()) { //runs until it is empty
       process(); //processes until the stack is empty
     }
