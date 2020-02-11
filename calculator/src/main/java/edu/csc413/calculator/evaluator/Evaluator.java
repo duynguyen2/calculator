@@ -54,32 +54,29 @@ public class Evaluator {
             throw new InvalidTokenException(expressionToken);
           }
 
-          Operator newOperator = Operator.getOperator(expressionToken);
+          else if (")".equals(expressionToken)) { //right parenthesis check
+            while (operatorStack.peek().priority() != 0)  //processing until corresponding left parenthesis is found
+              process();
 
-          //checking for emptiness or left parenthesis
-          if(operatorStack.isEmpty()) //push the newOperator into the stack if it is empty
-            operatorStack.push(newOperator);
+            operatorStack.pop(); //discarding the left parenthesis
+          }
 
-          else if(("(".equals(expressionToken)))
-            operatorStack.push(newOperator); //push the newOperator into the stack if it is a left parenthesis
+          else if("(".equals(expressionToken)) //left parenthesis check
+            operatorStack.push(new LeftParenthesisOperator()); //push a new left parenthesis operator to stack
 
-          else { //stack is not empty and operator is not a left parenthesis
-            if (")".equals(expressionToken)) { //right parenthesis check
-              while (operatorStack.peek().priority() != 0)  //processing until corresponding left parenthesis is found
+          else { //new operator has to be a mathematical operator that's not parenthesis
+            Operator newOperator = Operator.getOperator(expressionToken);
+
+            if(!operatorStack.isEmpty()) { //checking if operator stack is empty
+              while ((operatorStack.peek().priority() >= newOperator.priority()) && (!operatorStack.isEmpty()) && (operandStack.size() >= 2)) { //if the operatorStack item has higher or equal priority to the new operator or the operator stack is empty
                 process();
-
-              operatorStack.pop(); //discarding left parenthesis after it's found
-            } else { //new operator has to be a mathematical operator
-              while ((operatorStack.peek().priority() >= newOperator.priority() && !operatorStack.isEmpty())) { //if the operatorStack item has higher or equal priority to the new operator or the operator stack is empty
-                process();
-
-                if (operatorStack.isEmpty())//after processing, if the stack is empty then break out of the loop
+                if(operatorStack.isEmpty())
                   break;
 
-              } //end while
-              operatorStack.push(newOperator); //push the new operator
-            } //end mathematical operator else
-          } //end non-empty stack and not left parenthesis else
+              } //end while process
+            } //end not empty operator stack if
+            operatorStack.push(newOperator);//pushing new operator
+          } //end mathematical operator else
         } //end operand check else
       } //end space filter if
     } //end token while
