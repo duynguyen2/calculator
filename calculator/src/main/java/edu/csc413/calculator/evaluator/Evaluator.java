@@ -74,7 +74,7 @@ public class Evaluator {
               while ((operatorStack.peek().priority() >= newOperator.priority() && !operatorStack.isEmpty())) { //if the operatorStack item has higher or equal priority to the new operator or the operator stack is empty
                 process();
 
-                if (operatorStack.isEmpty())//after processing, if the stack is empty then break
+                if (operatorStack.isEmpty())//after processing, if the stack is empty then break out of the loop
                   break;
 
               } //end while
