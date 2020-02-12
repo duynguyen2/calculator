@@ -6,10 +6,10 @@ public class LeftParenthesisOperator extends Operator{
     @Override
     public int priority(){
         return 0;
-    }
+    } //only need a value different from the other operators
 
     @Override
     public Operand execute(Operand operandOne, Operand operandTwo) {
         return null;
-    }
+    } //never executes
 }
