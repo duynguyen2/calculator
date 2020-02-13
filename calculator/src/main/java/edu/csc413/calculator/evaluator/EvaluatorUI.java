@@ -71,7 +71,21 @@ public class EvaluatorUI extends JFrame implements ActionListener {
      *                    button is pressed.
      */
     public void actionPerformed(ActionEvent actionEventObject) {
-
+        String temp;
+        if(!actionEventObject.getActionCommand().equals("=") && !actionEventObject.getActionCommand().equals("C") && !actionEventObject.getActionCommand().equals("CE")){
+            this.expressionTextField.setText(this.expressionTextField.getText() + actionEventObject.getActionCommand());
+        }
+        else if(actionEventObject.getActionCommand().equals("=")){
+            Evaluator e = new Evaluator();
+            temp = this.expressionTextField.getText();
+            try{
+                int result = e.evaluateExpression(temp);
+                this.expressionTextField.setText(this.expressionTextField.getText() + "=" + result);
+            }
+            catch(Exception x){
+                this.expressionTextField.setText("Invalid. [Hit CE to clear]");
+            }
+        }
 
     }
 }
