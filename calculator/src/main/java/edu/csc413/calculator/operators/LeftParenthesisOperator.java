@@ -5,7 +5,7 @@ public class LeftParenthesisOperator extends Operator{
 
     @Override
     public int priority(){
-        return 0;
+        return -1;
     } //only need a value different from the other operators
 
     @Override
