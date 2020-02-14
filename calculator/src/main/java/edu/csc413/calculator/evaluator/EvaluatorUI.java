@@ -71,21 +71,26 @@ public class EvaluatorUI extends JFrame implements ActionListener {
      *                    button is pressed.
      */
     public void actionPerformed(ActionEvent actionEventObject) {
-        String temp;
+        String expression;
         if(!actionEventObject.getActionCommand().equals("=") && !actionEventObject.getActionCommand().equals("C") && !actionEventObject.getActionCommand().equals("CE")){
             this.expressionTextField.setText(this.expressionTextField.getText() + actionEventObject.getActionCommand());
         }
         else if(actionEventObject.getActionCommand().equals("=")){
             Evaluator e = new Evaluator();
-            temp = this.expressionTextField.getText();
+            expression = this.expressionTextField.getText();
             try{
-                int result = e.evaluateExpression(temp);
+                int result = e.evaluateExpression(expression);
                 this.expressionTextField.setText(this.expressionTextField.getText() + "=" + result);
             }
             catch(Exception x){
-                this.expressionTextField.setText("Invalid. [Hit CE to clear]");
+                this.expressionTextField.setText("Invalid [Hit CE to clear]");
             }
         }
-
+        if(actionEventObject.getActionCommand().equals("C")){ //keeps previous operator
+            this.expressionTextField.setText(""); //couldn't figure out how to keep previous operator
+        }
+        if(actionEventObject.getActionCommand().equals("CE")){
+            this.expressionTextField.setText("");
+        }
     }
 }
