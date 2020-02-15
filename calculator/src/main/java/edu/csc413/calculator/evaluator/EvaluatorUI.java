@@ -85,12 +85,13 @@ public class EvaluatorUI extends JFrame implements ActionListener {
                 this.expressionTextField.setText(this.expressionTextField.getText() + "=" + result);
             }
             catch(Exception x){
-                this.expressionTextField.setText("Invalid [Hit CE to clear]");
+                this.expressionTextField.setText("Invalid [Hit C to clear]");
             }
         }
-        if(actionEventObject.getActionCommand().equals("C")){ //keeps previous operator
-
-
+        else if(actionEventObject.getActionCommand().equals("C")){ //clears text field
+            this.expressionTextField.setText("");
+        }
+        else if(actionEventObject.getActionCommand().equals("CE")){ //clears until the last operator
             String previousExpression = expressionTextField.getText();
             int lastOperator = 0;
             for(int i = 0; i < previousExpression.length() - 1; i++){
@@ -102,9 +103,6 @@ public class EvaluatorUI extends JFrame implements ActionListener {
             String newExpression = "";
             newExpression = previousExpression.substring(0, lastOperator);
             expressionTextField.setText(newExpression);
-        }
-        if(actionEventObject.getActionCommand().equals("CE")){ //clears the entire text field
-            this.expressionTextField.setText("");
         }
     }
 }
