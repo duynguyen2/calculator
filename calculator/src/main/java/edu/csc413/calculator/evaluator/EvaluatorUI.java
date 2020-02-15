@@ -1,5 +1,7 @@
 package edu.csc413.calculator.evaluator;
 
+import edu.csc413.calculator.operators.Operator;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -87,9 +89,21 @@ public class EvaluatorUI extends JFrame implements ActionListener {
             }
         }
         if(actionEventObject.getActionCommand().equals("C")){ //keeps previous operator
-            this.expressionTextField.setText(""); //couldn't figure out how to keep previous operator
+
+
+            String previousExpression = expressionTextField.getText();
+            int lastOperator = 0;
+            for(int i = 0; i < previousExpression.length() - 1; i++){
+                if(Operator.check(String.valueOf(previousExpression.charAt(i)))){
+                    lastOperator = i;
+                    break;
+                }
+            }
+            String newExpression = "";
+            newExpression = previousExpression.substring(0, lastOperator);
+            expressionTextField.setText(newExpression);
         }
-        if(actionEventObject.getActionCommand().equals("CE")){
+        if(actionEventObject.getActionCommand().equals("CE")){ //clears the entire text field
             this.expressionTextField.setText("");
         }
     }
